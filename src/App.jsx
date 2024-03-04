@@ -34,6 +34,7 @@ function App() {
       return newTodos;
     });
     setTodo("")
+    todoinput.current.rows = 1;
   }
 
   const handleEdit = (e) => {
@@ -41,6 +42,8 @@ function App() {
     let t = todos.filter(item => item.id === id)
     setTodo(t[0].todo)
     todoinput.current.focus();
+    todoinput.current.rows = 10;
+
     saveBtn.current.textContent = "Save"
     setTodos((prevTodos) => {
       let newTodos = todos.filter(item => item.id !== id);
@@ -71,12 +74,15 @@ function App() {
     })
   };
 
+  function isDesktopOrLaptop() {
+    return window.innerWidth > 1024; // Adjust the threshold as needed
+  }
   return (
     <>
-      <div className="conatains  conatiner border  w-2/4 mx-auto m-4">
+      <div className="conatains max-md:w-full  conatiner border  w-2/4 mx-auto m-4">
         <Navbar />
-        <div className="mt-5 flex justify-center gap-4">
-          <textarea rows={1} type="text" onChange={handleChange} value={todo} ref={todoinput} name="todoinput" id="todoinput" className="pl-3 text-neutral-500 block w-2/5 rounded-md py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 text-base sm:leading-6 focus:ring-2 focus:ring-inset focus:ring-indigo-600 focus:outline-none" placeholder="Add Task" />
+        <div className="mt-5 flex justify-center items-center gap-4">
+          <textarea rows={1} type="text" onChange={handleChange} value={todo} ref={todoinput} name="todoinput" id="todoinput" className="pl-3 text-neutral-500 block w-2/5 max-md:w-3/5 rounded-md py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 text-base sm:leading-6 focus:ring-2 focus:ring-inset focus:ring-indigo-600 focus:outline-none" placeholder="Add Task" />
           <button onClick={handleAdd} ref={saveBtn} className="rounded-md h-10 bg-green-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 tracking-wider">Create</button>
         </div>
         <div className="tasks flex flex-col justify-center mt-1 p-3  ">
@@ -94,8 +100,8 @@ function App() {
               </thead>
               <tbody className='py-6'>
                 {todos.map(item => {
-                  return <tr key={item.id} className="h-20 odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                    <td className="pl-3 py-4 " style={{ width: '10rem' }}>
+                  return <tr key={item.id} className="h-20 odd:bg-white  even:bg-gray-50">
+                    <td className="pl-3 py-4 max-md:py-10 " style={{ width: '10rem' }}>
                       {item.isCompleted ? (
                         <div>
                           <span className="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Completed</span>
@@ -146,7 +152,10 @@ function App() {
 
                     </td>
                     <td className="my-auto px-6  py-3 item w-full h-12 rounded-lg  text-base   bg-[rgb(246,246,246)] flex justify-between items-center p-3 mt-5">
-                      <div className="task">{item.todo.slice(0, 90).concat("", "....")}</div>
+                      <div className="task  ">
+                      {isDesktopOrLaptop() ? item.todo.slice(0, 90).concat("", "....") : item.todo.slice(0, 10).concat("", "....")}
+
+                      </div>
                       <div className="funcs flex">
                         <button onClick={handleEdit} value={item.id} className="rounded-md  bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 tracking-wider">Edit/View</button>
                         <button onClick={handleDelete} value={item.id} className="rounded-md ml-3 bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 tracking-wider">Delete</button>
@@ -164,5 +173,4 @@ function App() {
 }
 
 export default App
-
 
