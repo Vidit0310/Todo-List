@@ -25,11 +25,15 @@ function App() {
   const handleChange = (e) => {
     setTodo(e.target.value)
   }
-  
+
   const handleAdd = () => {
     let uuid = uuidv4();
-      setTodos([...todos, { id: uuid, todo, isCompleted: false }])
-      setTodo("")
+    setTodos((prevTodos) => {
+      const newTodos = [...prevTodos, { id: uuid, todo, isCompleted: false }];
+      localStorage.setItem("todos", JSON.stringify(newTodos));
+      return newTodos;
+    });
+    setTodo("")
   }
 
   const handleEdit = (e) => {
@@ -38,13 +42,20 @@ function App() {
     setTodo(t[0].todo)
     todoinput.current.focus();
     saveBtn.current.textContent = "Save"
-    let newtodos = todos.filter(item => item.id !== id);
-    setTodos(newtodos);
+    setTodos((prevTodos) => {
+      let newTodos = todos.filter(item => item.id !== id);
+      localStorage.setItem("todos", JSON.stringify(newTodos));
+      return newTodos;
+    })
+
   }
   const handleDelete = (e) => {
     let id = e.target.value
-    let newtodos = todos.filter(item => item.id !== id);
-    setTodos(newtodos);
+    setTodos((prevTodos) => {
+      let newTodos = todos.filter(item => item.id !== id);
+      localStorage.setItem("todos", JSON.stringify(newTodos));
+      return newTodos;
+    })
   }
 
   const changeType = (id) => {
@@ -53,12 +64,16 @@ function App() {
     })
     let newtodos = [...todos];
     newtodos[index].isCompleted = !newtodos[index].isCompleted
-    setTodos(newtodos)
+    setTodos((prevTodos) => {
+      localStorage.setItem("todos", JSON.stringify(newtodos));
+      return newtodos;
+
+    })
   };
 
   return (
     <>
-      <div className="conatiner border  w-2/4 mx-auto m-4">
+      <div className="conatains  conatiner border  w-2/4 mx-auto m-4">
         <Navbar />
         <div className="mt-5 flex justify-center gap-4">
           <textarea rows={1} type="text" onChange={handleChange} value={todo} ref={todoinput} name="todoinput" id="todoinput" className="pl-3 text-neutral-500 block w-2/5 rounded-md py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 text-base sm:leading-6 focus:ring-2 focus:ring-inset focus:ring-indigo-600 focus:outline-none" placeholder="Add Task" />
