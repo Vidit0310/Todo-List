@@ -82,7 +82,7 @@ function App() {
       <div className="conatains max-md:w-full  conatiner border  w-2/4 mx-auto m-4">
         <Navbar />
         <div className="mt-5 flex justify-center items-center gap-4">
-          <textarea rows={1} type="text" onChange={handleChange} value={todo} ref={todoinput} name="todoinput" id="todoinput" className="pl-3 text-neutral-500 block w-2/5 max-md:w-3/5 rounded-md py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 text-base sm:leading-6 focus:ring-2 focus:ring-inset focus:ring-indigo-600 focus:outline-none" placeholder="Add Task" />
+          <textarea rows={1} type="text" onChange={handleChange} value={todo} ref={todoinput} onBlur={handleAdd}  name="todoinput" id="todoinput" className="pl-3 text-neutral-500 block w-2/5 max-md:w-3/5 rounded-md py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 text-base sm:leading-6 focus:ring-2 focus:ring-inset focus:ring-indigo-600 focus:outline-none" placeholder="Add Task" />
           <button onClick={handleAdd} ref={saveBtn} className="rounded-md h-10 bg-green-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 tracking-wider">Create</button>
         </div>
         <div className="tasks flex flex-col justify-center mt-1 p-3  ">
